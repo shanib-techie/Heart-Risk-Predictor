@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About | Heart Risk Predictor</title>
+<meta name="description" content="How the heart disease risk model was built, which models were compared, and why LightGBM was chosen.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/about.css">
+</head>
+<body data-page="about">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 28C8 21.5 3 17 3 11.2 3 7.2 6 4.5 9.6 4.5c2.6 0 4.7 1.4 6.4 3.9 1.7-2.5 3.8-3.9 6.4-3.9C26 4.5 29 7.2 29 11.2 29 17 24 21.5 16 28Z" fill="#c1121f"/><path d="M4 16.5h6.5l2.2-5 3.3 10 2.4-6.5 1.6 1.5H28" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Heart Risk Predictor</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><span></span></button>
+    <nav class="site-nav" id="site-nav" aria-label="Main"><a href="index.html" data-nav="home">Home</a><a href="parameters.html" data-nav="parameters">Parameters</a><a href="prediction.html" data-nav="prediction">Prediction</a><a href="about.html" data-nav="about">About</a><a class="btn btn-primary" href="prediction.html">Predict Risk</a></nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="page-intro">
+  <div class="container">
+    <h1>About this project</h1>
+    <p class="lead">A student project about applying machine learning to a healthcare-style classification problem, from raw data to a working web app.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:1.5rem">
+  <div class="container two-col">
+    <div><h2>Why I built this</h2></div>
+    <div class="prose">
+      <p>I wanted to understand how machine learning applies to a real healthcare-related problem: given a person’s health measurements, can a model predict whether they have heart disease? The data is a table of health and lifestyle values with a yes/no label, <code>has_heart_disease</code>.</p>
+      <p>Rather than stopping at a notebook, I compared several models, kept the one that scored best, put it behind a FastAPI service, and built this interface so the model can be used and its inputs understood.</p>
+      <p>It is a learning project. It has not been clinically validated and cannot diagnose anything.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint" id="process">
+  <div class="container">
+    <div class="section-head"><h2>My machine learning process</h2><p>The steps below are the ones that exist in the notebook and the code.</p></div>
+    <ol class="timeline">
+      <li><h3>Dataset</h3><p><code>heart_disease_risk_2026.csv</code>: 27 columns, about <span data-stat="total-rows">9,000</span> records, with <code>has_heart_disease</code> as the label.</p></li>
+      <li><h3>Data check</h3><p>I counted missing values in every column. There were none.</p></li>
+      <li><h3>Preprocessing</h3><p>Removed <code>patient_id</code>, <code>chest_pain_type</code> and <code>family_history</code> from the final feature set, then one-hot encoded <code>sex</code> and <code>smoker_status</code>. That leaves 26 model columns built from the 23 inputs the API accepts.</p></li>
+      <li><h3>Train and test split</h3><p>80% for training (<span data-stat="train-rows">7,200</span> records) and 20% for testing (<span data-stat="test-rows">1,800</span>), with <code>random_state=42</code>.</p></li>
+      <li><h3>Four models trained</h3><p>Logistic Regression, Random Forest, XGBoost and LightGBM.</p></li>
+      <li><h3>Evaluation</h3><p>Accuracy and a confusion matrix for every model, plus ROC-AUC for the tree-based models.</p></li>
+      <li><h3>Feature importance</h3><p>I read LightGBM’s <code>feature_importances_</code> to see which inputs the model relied on.</p></li>
+      <li><h3>Final model</h3><p>LightGBM (300 trees, learning rate 0.05, maximum depth 8), retrained on all records and saved with joblib together with its list of columns.</p></li>
+      <li><h3>FastAPI service</h3><p>A <code>POST /prediction</code> endpoint validates the input, applies the same encoding, and returns the prediction with both probabilities.</p></li>
+      <li><h3>This web interface</h3><p>A form that sends the 23 values to the endpoint and shows the response.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="models">
+  <div class="container">
+    <div class="section-head"><h2>Models tested</h2><p>All four models were trained on the same training split and scored on the same test records. Positive class: has heart disease.</p></div>
+    <div class="table-scroll" id="metrics-table"><p class="muted" style="padding:1rem">Loading results…</p></div>
+    <details class="notes" id="stats-notes"></details>
+  </div>
+</section>
+
+<section class="section section--tint" id="why-lightgbm">
+  <div class="container two-col">
+    <div>
+      <h2>Why LightGBM</h2>
+      <ul class="why-list" id="why-list"></ul>
+      <p class="muted">The gaps between the top models are small and come from a single train-test split, so this shows LightGBM scored best on this data, not that it is better in general.</p>
+    </div>
+    <div>
+      <h3>LightGBM on the test set</h3>
+      <p class="muted">Every test record falls in one of four cells.</p>
+      <div id="confusion-matrix"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="importance">
+  <div class="container importance-wrap" style="max-width:860px">
+    <div class="section-head"><h2>Feature importance</h2><p>How many times LightGBM used each feature to split the data. It shows what the model relied on, not what causes heart disease.</p></div>
+    <div id="importance-chart"><p class="muted">Loading…</p></div>
+    <div class="chart-actions"><button class="btn-link" id="importance-toggle" type="button" hidden>Show all</button></div>
+    <p class="chart-note" id="importance-note"></p>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container two-col">
+    <div>
+      <h2>Built with</h2>
+      <ul class="tech-list"><li>Python</li><li>pandas</li><li>scikit-learn</li><li>XGBoost</li><li>LightGBM</li><li>joblib</li><li>FastAPI</li><li>HTML, CSS and JavaScript</li></ul>
+    </div>
+    <div>
+      <h2>Limitations</h2>
+      <ul class="limits">
+        <li>The model learns patterns in one dataset. It has not been tested on other populations or in a clinic.</li>
+        <li>It gives a probability, not a diagnosis, and it can be wrong in both directions.</li>
+        <li>The final model was trained on all records, so the scores above come from the earlier train-test experiments.</li>
+      </ul>
+      <div style="margin-top:1.25rem"><div class="disclaimer "><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.2v.1" stroke-linecap="round"/></svg><p>This prediction is generated by a machine-learning model and is not a medical diagnosis. It should not replace advice, testing, or evaluation by a qualified healthcare professional.</p></div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <a class="brand" href="index.html"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 28C8 21.5 3 17 3 11.2 3 7.2 6 4.5 9.6 4.5c2.6 0 4.7 1.4 6.4 3.9 1.7-2.5 3.8-3.9 6.4-3.9C26 4.5 29 7.2 29 11.2 29 17 24 21.5 16 28Z" fill="#c1121f"/><path d="M4 16.5h6.5l2.2-5 3.3 10 2.4-6.5 1.6 1.5H28" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Heart Risk Predictor</span></a>
+      <p>An educational machine-learning project. This prediction is generated by a machine-learning model and is not a medical diagnosis. It should not replace advice, testing, or evaluation by a qualified healthcare professional.</p>
+    </div>
+    <ul aria-label="Pages"><li><a href="index.html">Home</a></li><li><a href="parameters.html">Parameters</a></li><li><a href="prediction.html">Prediction</a></li><li><a href="about.html">About</a></li></ul>
+  </div>
+</footer>
+<script src="js/fields.js"></script><script src="js/main.js"></script><script src="js/about.js"></script>
+</body>
+</html>

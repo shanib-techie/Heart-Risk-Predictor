@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heart Disease Risk Prediction</title>
+<meta name="description" content="A machine-learning project that estimates heart disease risk from 23 health details using a LightGBM classifier.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/home.css">
+</head>
+<body data-page="home">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 28C8 21.5 3 17 3 11.2 3 7.2 6 4.5 9.6 4.5c2.6 0 4.7 1.4 6.4 3.9 1.7-2.5 3.8-3.9 6.4-3.9C26 4.5 29 7.2 29 11.2 29 17 24 21.5 16 28Z" fill="#c1121f"/><path d="M4 16.5h6.5l2.2-5 3.3 10 2.4-6.5 1.6 1.5H28" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Heart Risk Predictor</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><span></span></button>
+    <nav class="site-nav" id="site-nav" aria-label="Main"><a href="index.html" data-nav="home">Home</a><a href="parameters.html" data-nav="parameters">Parameters</a><a href="prediction.html" data-nav="prediction">Prediction</a><a href="about.html" data-nav="about">About</a><a class="btn btn-primary" href="prediction.html">Predict Risk</a></nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="hero">
+  <div class="container hero-copy">
+    <h1>Heart Disease Risk Prediction</h1>
+    <p class="lead">Enter 23 health details and a machine-learning model estimates the probability of heart disease. It is a student project built to learn how classification models work on healthcare data.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary btn-lg" href="prediction.html">Check Heart Disease Risk</a>
+      <a class="btn btn-ghost btn-lg" href="parameters.html">Understand the Parameters</a>
+    </div>
+    <p class="hero-note"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.2v.1" stroke-linecap="round"/></svg><span>Educational project. The result is a model estimate, not a medical diagnosis.</span></p>
+  </div>
+  <div class="ecg" aria-hidden="true">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none"><path pathLength="1" d="M0 100 L150 100 l40 0 q14 -16 28 0 l14 0 l8 12 l14 -98 l16 124 l12 -38 l30 0 q28 -34 56 0 L500 100 l40 0 q14 -16 28 0 l14 0 l8 12 l14 -98 l16 124 l12 -38 l30 0 q28 -34 56 0 L850 100 l40 0 q14 -16 28 0 l14 0 l8 12 l14 -98 l16 124 l12 -38 l30 0 q28 -34 56 0 L1200 100 l40 0 q14 -16 28 0 l14 0 l8 12 l14 -98 l16 124 l12 -38 l30 0 q28 -34 56 0 L1440 100"/></svg>
+  </div>
+</section>
+
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="section-head"><h2>How it works</h2><p>Three steps, from your numbers to a probability.</p></div>
+    <ol class="flow">
+      <li><div class="flow-icon"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="16" height="19" rx="2.5"/><path d="M9 4V3h8v1M9 10h8M9 14h8M9 18h5"/></svg></div><h3>Enter health details</h3><p>Answer 23 questions in four short steps: age, blood pressure, blood test results, and exercise and lifestyle. Each one is explained on the Parameters page.</p></li>
+      <li><div class="flow-icon"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13" cy="5" r="2.5"/><circle cx="6" cy="20" r="2.5"/><circle cx="20" cy="20" r="2.5"/><path d="M13 7.5V12M13 12 6 17.5M13 12l7 5.5"/></svg></div><h3>Machine learning model</h3><p>A LightGBM classifier, trained on records of people with and without heart disease, reads your values.</p></li>
+      <li><div class="flow-icon"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18a9 9 0 1 1 18 0"/><path d="m13 18 4-6"/></svg></div><h3>Risk prediction</h3><p>You get a prediction and two probabilities, disease and no disease, exactly as the API returns them.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section--tint" id="model">
+  <div class="container model-grid">
+    <div>
+      <h2>Chosen from <span data-stat="model-count">four</span> models</h2>
+      <p>I trained Logistic Regression, Random Forest, XGBoost and LightGBM on the same data split and compared them. LightGBM had the highest accuracy: <strong data-stat="final-accuracy">90.17%</strong> on <span data-stat="test-rows">1,800</span> test records that were kept out of training.</p>
+      <ul class="model-facts">
+        <li><strong>Final model</strong>LightGBM classifier with 300 trees, learning rate 0.05 and maximum depth 8.</li>
+        <li><strong>Data</strong><span data-stat="total-rows">9,000</span> records: <span data-stat="train-rows">7,200</span> for training and <span data-stat="test-rows">1,800</span> for testing.</li>
+        <li><strong>Also measured</strong>Confusion matrices for every model, and ROC-AUC where it was calculated.</li>
+      </ul>
+      <p style="margin-top:1.5rem"><a href="about.html#models">See the full comparison</a></p>
+    </div>
+    <div class="model-panel">
+      <h3>Accuracy on the test set</h3>
+      <p class="panel-sub">Share of test records classified correctly.</p>
+      <div id="accuracy-bars"><p class="muted">Loading results…</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="importance">
+  <div class="container importance-wrap">
+    <div class="section-head"><h2>What the model relies on most</h2><p>LightGBM’s feature importance: how many times each feature was used to split the data across the model’s trees. Higher means the model used it more. It does not mean the feature causes heart disease.</p></div>
+    <div id="importance-preview"><p class="muted">Loading…</p></div>
+    <div class="chart-actions"><a href="parameters.html#importance">See all features and what each one means</a></div>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="container cta-inner">
+    <div><h2>Ready to try it?</h2><p>Have a recent blood test and blood pressure reading nearby. It takes a few minutes.</p></div>
+    <a class="btn btn-primary btn-lg" href="prediction.html">Check Heart Disease Risk</a>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <a class="brand" href="index.html"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 28C8 21.5 3 17 3 11.2 3 7.2 6 4.5 9.6 4.5c2.6 0 4.7 1.4 6.4 3.9 1.7-2.5 3.8-3.9 6.4-3.9C26 4.5 29 7.2 29 11.2 29 17 24 21.5 16 28Z" fill="#c1121f"/><path d="M4 16.5h6.5l2.2-5 3.3 10 2.4-6.5 1.6 1.5H28" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Heart Risk Predictor</span></a>
+      <p>An educational machine-learning project. This prediction is generated by a machine-learning model and is not a medical diagnosis. It should not replace advice, testing, or evaluation by a qualified healthcare professional.</p>
+    </div>
+    <ul aria-label="Pages"><li><a href="index.html">Home</a></li><li><a href="parameters.html">Parameters</a></li><li><a href="prediction.html">Prediction</a></li><li><a href="about.html">About</a></li></ul>
+  </div>
+</footer>
+<script src="js/fields.js"></script><script src="js/main.js"></script><script src="js/home.js"></script>
+</body>
+</html>

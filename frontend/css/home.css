@@ -1,0 +1,79 @@
+/* ==========================================================================
+   home.css — homepage only
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- hero */
+.hero { position: relative; overflow: hidden; padding-top: clamp(3rem, 8vw, 6rem); }
+
+/* ECG graph paper: faint 12px squares, stronger every 60px */
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(193, 18, 31, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(193, 18, 31, 0.07) 1px, transparent 1px),
+    linear-gradient(rgba(193, 18, 31, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(193, 18, 31, 0.14) 1px, transparent 1px);
+  background-size: 12px 12px, 12px 12px, 60px 60px, 60px 60px;
+  -webkit-mask-image: linear-gradient(#000 55%, transparent);
+          mask-image: linear-gradient(#000 55%, transparent);
+}
+.hero-copy { position: relative; z-index: 1; }
+.hero h1 { max-width: 15ch; margin-bottom: 0.4em; }
+.hero .lead { max-width: 54ch; margin-bottom: 1.75rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+.hero-note { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--slate); margin: 0; }
+.hero-note svg { width: 18px; height: 18px; flex: none; color: var(--crimson); }
+
+/* the one animated moment on the page: the trace draws itself once */
+.ecg { position: relative; z-index: 1; margin-top: clamp(1.5rem, 4vw, 3rem); line-height: 0; }
+.ecg svg { width: 100%; height: clamp(90px, 14vw, 170px); display: block; }
+.ecg path {
+  fill: none; stroke: var(--crimson); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: ecg-draw 3.2s cubic-bezier(0.45, 0.05, 0.3, 1) 0.4s forwards;
+}
+@keyframes ecg-draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .ecg path { stroke-dashoffset: 0; } }
+
+/* ---------------------------------------------------------------- how it works */
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; counter-reset: step; }
+.flow li { position: relative; padding: 0 2rem 0 0; }
+.flow li:not(:last-child)::after {
+  content: ""; position: absolute; top: 26px; right: 0.5rem; width: calc(2rem - 1rem); height: 2px;
+  background: var(--line);
+}
+.flow-icon {
+  display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 1.1rem;
+  border: 1.5px solid var(--ink); border-radius: var(--r-lg); background: #fff; color: var(--ink);
+}
+.flow-icon svg { width: 26px; height: 26px; }
+.flow h3 { margin-bottom: 0.35em; }
+.flow p { color: var(--slate); font-size: 0.97rem; margin-bottom: 0; }
+@media (max-width: 760px) {
+  .flow { grid-template-columns: 1fr; gap: 2rem; }
+  .flow li { padding: 0 0 0 4.2rem; }
+  .flow li:not(:last-child)::after { top: 60px; left: 25px; right: auto; width: 2px; height: calc(100% - 40px); }
+  .flow-icon { position: absolute; left: 0; top: 0; margin: 0; }
+}
+
+/* ---------------------------------------------------------------- model section */
+.model-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+.model-panel { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.5rem 1.5rem 1.25rem; }
+.model-panel h3 { font-size: 1.05rem; margin-bottom: 0.15em; }
+.model-panel .panel-sub { font-size: 0.88rem; color: var(--slate); margin-bottom: 1.1rem; }
+.bars--wide .bar-row { grid-template-columns: minmax(120px, 170px) 1fr 4.2rem; }
+.model-facts { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 0.85rem; }
+.model-facts li { padding-left: 1.1rem; border-left: 2px solid var(--line); font-size: 0.97rem; }
+.model-facts strong { display: block; font-weight: 600; }
+@media (max-width: 900px) { .model-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .bars--wide .bar-row { grid-template-columns: 1fr 4rem; } }
+
+/* ---------------------------------------------------------------- importance preview */
+.importance-wrap { max-width: 860px; }
+
+/* ---------------------------------------------------------------- closing call to action */
+.cta-band { background: var(--night); color: #fff; }
+.cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.cta-band h2 { margin-bottom: 0.25em; max-width: 22ch; }
+.cta-band p { color: #b8c4d0; margin: 0; }
+.cta-band .btn-primary:hover { background: #e0202e; }

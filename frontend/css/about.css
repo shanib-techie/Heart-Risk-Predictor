@@ -1,0 +1,59 @@
+/* ==========================================================================
+   about.css — project story, workflow, model comparison
+   ========================================================================== */
+
+.prose { max-width: 66ch; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
+@media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------------------- workflow (a real sequence, so it is numbered) */
+.timeline { list-style: none; margin: 0; padding: 0; counter-reset: t; max-width: 760px; }
+.timeline li { position: relative; padding: 0 0 1.75rem 3.4rem; counter-increment: t; }
+.timeline li::before {
+  content: counter(t); position: absolute; left: 0; top: 0; width: 34px; height: 34px; display: grid; place-items: center;
+  border: 1.5px solid var(--ink); border-radius: 50%; background: var(--paper);
+  font-size: 0.85rem; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.timeline li::after { content: ""; position: absolute; left: 16.5px; top: 40px; bottom: 6px; width: 1.5px; background: var(--line); }
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li:last-child::after { display: none; }
+.timeline li:last-child::before { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+.timeline h3 { font-size: 1.05rem; margin: 0.3rem 0 0.2em; }
+.timeline p { margin: 0; color: var(--slate); font-size: 0.96rem; }
+.timeline code, .prose code { font-size: 0.88em; background: var(--surface); padding: 0.1em 0.35em; border-radius: 4px; }
+
+/* ---------------------------------------------------------------- metrics table */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-lg); background: #fff; }
+table.metrics { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 640px; }
+.metrics caption { caption-side: bottom; text-align: left; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--slate); }
+.metrics th, .metrics td { padding: 0.85rem 1rem; text-align: right; font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--line); }
+.metrics thead th { font-size: 0.85rem; font-weight: 600; color: var(--slate); white-space: nowrap; }
+.metrics th:first-child { text-align: left; }
+.metrics tbody th { font-weight: 600; white-space: nowrap; }
+.metrics tr.is-final { background: var(--crimson-tint); }
+.metrics td.best { font-weight: 700; }
+.metrics td.best::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--crimson); margin-right: 0.45rem; transform: translateY(-2px); }
+.metrics td.na { color: var(--slate); font-size: 0.82rem; font-style: italic; }
+.final-tag { margin-left: 0.6rem; padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--crimson); color: #fff; font-size: 0.72rem; font-weight: 600; }
+.metrics tbody tr:last-child th, .metrics tbody tr:last-child td { border-bottom: 0; }
+
+.notes { margin-top: 1rem; border: 1px solid var(--line); border-radius: var(--r-sm); padding: 0.75rem 1rem; background: #fff; font-size: 0.9rem; }
+.notes summary { cursor: pointer; font-weight: 600; }
+.notes p { margin: 0.6rem 0 0; color: var(--slate); max-width: none; }
+
+/* ---------------------------------------------------------------- confusion matrix */
+.cm-grid { display: grid; grid-template-columns: 7.5rem 1fr 1fr; gap: 6px; max-width: 460px; }
+.cm-head { font-size: 0.8rem; color: var(--slate); display: grid; align-items: end; text-align: center; padding-bottom: 0.2rem; }
+.cm-side { align-items: center; text-align: right; padding: 0 0.4rem 0 0; }
+.cm-cell { display: grid; place-content: center; text-align: center; padding: 1.1rem 0.5rem; border-radius: var(--r-sm); }
+.cm-cell strong { font-family: var(--font-head); font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+.cm-cell span { font-size: 0.8rem; }
+.cm-cell.good { background: var(--teal-tint); color: var(--teal); }
+.cm-cell.bad { background: var(--crimson-tint); color: var(--crimson-deep); }
+
+/* ---------------------------------------------------------------- why list, tech list */
+.why-list { padding-left: 0; list-style: none; display: grid; gap: 0.8rem; margin: 0 0 1.25rem; }
+.why-list li { padding-left: 1rem; border-left: 3px solid var(--crimson); font-size: 0.97rem; }
+.tech-list { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; }
+.tech-list li { padding: 0.3rem 0.8rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.9rem; background: #fff; }
+.limits { display: grid; gap: 0.6rem; padding-left: 1.1rem; }
