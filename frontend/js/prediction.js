@@ -199,7 +199,7 @@
     setLoading(true);
 
     try {
-      const res = await fetch("/prediction", {
+      const res = await fetch("https://heart-risk-predictor-6os1.onrender.com/prediction", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
